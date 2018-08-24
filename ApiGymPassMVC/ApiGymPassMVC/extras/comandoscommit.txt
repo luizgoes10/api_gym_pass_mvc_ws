@@ -1,0 +1,7 @@
+git add --all
+git commit -m "texto"
+git push -u origin master
+
+navegar 
+
+cd:\pasta
