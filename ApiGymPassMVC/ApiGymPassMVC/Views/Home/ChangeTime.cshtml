@@ -1,0 +1,74 @@
+﻿@model IEnumerable<ApiGymPassMVC.Models.Periodo>
+
+@{
+    ViewBag.Title = "ChangeTime";
+}
+
+<h2>ChangeTime</h2>
+
+<p>
+    @using (Html.BeginForm())
+    {
+    <div class="form-horizontal">
+        <h4>Pesquisar</h4>
+        <hr />
+        <div class="form-group">
+            @Html.Label("Nome da Suíte:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.Editor("nmBox", new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Pesquisar" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+            }
+    </p>
+@{ 
+    if (Model != null)
+    {
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IdPeriodo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NmDescricao)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IdBox)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VlrPeriodo)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.IdPeriodo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NmDescricao)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IdBox)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VlrPeriodo)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "ChangeTimeEdit", new {  id=item.IdPeriodo  }) |
+           <!-- @Html.ActionLink("Details", "Details", new { id=item.IdPeriodo  }) | -->
+            @Html.ActionLink("Excluir", "DeleteTime", new { id=item.IdPeriodo  })
+        </td>
+    </tr>
+}
+
+</table>
+    }
+}
