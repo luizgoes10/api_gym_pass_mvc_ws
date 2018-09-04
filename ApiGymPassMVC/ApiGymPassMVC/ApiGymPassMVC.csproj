@@ -283,6 +283,7 @@
     <Content Include="Views\Home\ChangeTimeEdit.cshtml" />
     <Content Include="Views\Home\ChangeCompany.cshtml" />
     <Content Include="Views\Home\ChangeCompanyEdit.cshtml" />
+    <Content Include="Views\Home\MakeLocalizacao.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

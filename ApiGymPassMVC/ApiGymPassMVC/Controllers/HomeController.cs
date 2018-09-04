@@ -65,6 +65,21 @@ namespace ApiGymPassMVC.Controllers
             }
             return Json("{Error:Houve um erro}", JsonRequestBehavior.AllowGet);
         }
+        public ActionResult MakeLocalizacao()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult MakeLocalizacao([Bind(Exclude = "IdLocalizacao")] Localizacao localizacao)
+        {
+            if (ModelState.IsValid)
+            {
+                BackEnd.PostLocalizacao(localizacao);
+                // return Json(BackEnd.PostTime(periodo), JsonRequestBehavior.AllowGet);
+                return View();
+            }
+            return Json("{Error:Houve um erro}", JsonRequestBehavior.AllowGet);
+        }
         public ActionResult ChangeTime()
         {
             return View();

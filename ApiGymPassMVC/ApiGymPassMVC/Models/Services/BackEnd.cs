@@ -14,6 +14,28 @@ namespace ApiGymPassMVC.Models.Services
 {
     public static class BackEnd
     {
+        public static object[] PostLocalizacao(Localizacao localizacao)
+        {
+            try
+            {
+                ConnectionUtil.CMD_INSERT_LOCALIZACAO.Connection = ConnectionSettings.AbrirConexao();
+                ConnectionUtil.CMD_INSERT_LOCALIZACAO.Parameters.Add("@NmLocalizacao", SqlDbType.NVarChar).Value = localizacao.NmLocalizacao;
+                ConnectionUtil.CMD_INSERT_LOCALIZACAO.Parameters.Add("@IdEstado", SqlDbType.Int).Value = localizacao.IdEstado;
+                ConnectionUtil.CMD_INSERT_LOCALIZACAO.ExecuteNonQuery();
+                ConnectionUtil.CMD_INSERT_LOCALIZACAO.Parameters.Clear();
+                ConnectionSettings.FecharConexao();
+
+            }
+            catch (SqlException ex)
+            {
+                Debug.WriteLine("Houve um erro" + ex.Message);
+                ConnectionSettings.FecharConexao();
+                return new object[] { "Houve um erro:", ex.Message };
+            }
+
+            return new object[] { "sucesso em salvar dados:", localizacao };
+
+        }
         public static List<Regiao> GetObjetos()
         {
 
@@ -540,4 +562,6 @@ namespace ApiGymPassMVC.Models.Services
             return false;
         }
     }
+
+
 }
