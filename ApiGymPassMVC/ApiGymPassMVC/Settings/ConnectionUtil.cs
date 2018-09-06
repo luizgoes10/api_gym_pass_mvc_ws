@@ -60,5 +60,7 @@ namespace ApiGymPassMVC.Settings
             "where IdEmpresa = @IdEmpresa");
         public static SqlCommand CMD_INSERT_LOCALIZACAO = new SqlCommand("insert into tbLocalizacao values(@NmLocalizacao,@IdEstado)");
 
+        public static SqlCommand CMD_SELECT_EMPRESA_ID_LOCALIZACAO = new SqlCommand("select *from tbEmpresa where IdLocalizacao = @IdLocalizacao");
+
     }
 }

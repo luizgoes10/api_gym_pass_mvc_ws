@@ -18,9 +18,9 @@ namespace ApiGymPassMVC.Controllers
         }
 
         // GET api/values/5
-        public string Get(int id)
+        public List<Empresa> Get(int id)
         {
-            return "value";
+            return BackEnd.GetEmpresaByIdLocalizacao(id);
         }
 
         // POST api/values

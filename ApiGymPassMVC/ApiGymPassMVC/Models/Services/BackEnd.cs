@@ -14,6 +14,107 @@ namespace ApiGymPassMVC.Models.Services
 {
     public static class BackEnd
     {
+        public static List<Empresa> GetEmpresaByIdLocalizacao(int id)
+        {
+            List<Empresa> listEmpresas = null;
+
+            List<Box> listBox = null;
+
+            List<Periodo> listPeriodo = null;
+
+            SqlDataReader reader = null;
+
+            try
+            {
+                ConnectionUtil.CMD_SELECT_EMPRESA_ID_LOCALIZACAO.Connection = ConnectionSettings.AbrirConexao();
+                ConnectionUtil.CMD_SELECT_EMPRESA_ID_LOCALIZACAO.Parameters.Add("@IdLocalizacao", SqlDbType.Int).Value = id;
+
+                reader = ConnectionUtil.CMD_SELECT_EMPRESA_ID_LOCALIZACAO.ExecuteReader();
+
+                listEmpresas = new List<Empresa>();
+
+                listBox = new List<Box>();
+
+                listPeriodo = new List<Periodo>();
+
+                while (reader.Read())
+                {
+                    listEmpresas.Add(new Empresa
+                    {
+                        IdEmpresa =
+                        Convert.ToInt32(reader["IdEmpresa"]),
+                        NmEmpresa = reader["nmEmpresa"].ToString(),
+                        ImgLogo = reader["imgLogo"].ToString(),
+                        AddrEndereco = reader["addrEndereco"].ToString(),
+                        TelTelefone = reader["telTelefone"].ToString(),
+                        BoolGostei = Convert.ToBoolean(reader["boolGostei"]),
+                        TxtSobre = reader["txtSobre"].ToString(),
+                        TxtCortesia = reader["txtCortesia"].ToString(),
+                        TxtLocalizacao = reader["txtLocalizacao"].ToString(),
+                        IdLocalizacao = Convert.ToInt32(reader["IdLocalizacao"]),
+                        VlrMinPreco = Convert.ToDecimal(reader["vlrMinPreco"]),
+                        VlrMaxPreco = Convert.ToDecimal(reader["vlrMaxPreco"]),
+                    });
+                }
+
+                ConnectionSettings.FecharConexao();
+                reader = null;
+                ConnectionUtil.CMD_SELECT_BOX.Connection = ConnectionSettings.AbrirConexao();
+                reader = ConnectionUtil.CMD_SELECT_BOX.ExecuteReader();
+                while (reader.Read())
+                {
+                    listBox.Add(new Box
+                    {
+                        IdBox = Convert.ToInt32(reader["IdBox"]),
+                        NmBox = reader["NmBox"].ToString(),
+                        imgFoto = reader["ImgFoto"].ToString(),
+                        TxtAmbiente = reader["TxtAmbiente"].ToString(),
+                        TxtInfo = reader["TxtInfo"].ToString(),
+                        TxtDescParceiro1Oferta = reader["TxtDescParc1Oferta"].ToString(),
+                        TxtDescParceiro2Oferta = reader["TxtDexParc2Oferta"].ToString(),
+                        LnkParceiro1 = reader["LnkParceiro1"].ToString(),
+                        LnkParceiro2 = reader["LnkParceiro2"].ToString(),
+                        IdEmpresa = Convert.ToInt32(reader["IdEmpresa"]),
+                        NmInfoImportante = reader["NmInfoImportante"].ToString()
+                    });
+                }
+                ConnectionSettings.FecharConexao();
+                reader = null;
+                ConnectionUtil.CMD_SELECT_PERIODO.Connection = ConnectionSettings.AbrirConexao();
+                reader = ConnectionUtil.CMD_SELECT_PERIODO.ExecuteReader();
+                while (reader.Read())
+                {
+                    listPeriodo.Add(new Periodo
+                    {
+                        IdPeriodo = Convert.ToInt32(reader["IdPeriodo"]),
+                        NmDescricao = reader["NmPeriodo"].ToString(),
+                        VlrPeriodo = Convert.ToDecimal(reader["VlrPeriodo"]),
+                        IdBox = Convert.ToInt32(reader["IdBox"])
+                    });
+                }
+                foreach (var emp in listEmpresas)
+                {
+                    emp.Box = listBox.Where(lb => lb.IdEmpresa == emp.IdEmpresa).ToList();
+                }
+                foreach (var b in listBox)
+                {
+                    b.Periodo = listPeriodo.Where(lp => lp.IdBox == b.IdBox).ToList();
+                }
+                ConnectionUtil.CMD_SELECT_EMPRESA_ID_LOCALIZACAO.Parameters.Clear();
+                ConnectionSettings.FecharConexao();
+
+                return listEmpresas;
+
+            }catch(SqlException ex)
+            {
+                Debug.WriteLine("Houve um erro:" + ex.Message);
+            }
+
+
+
+            return listEmpresas;
+        }
+
         public static object[] PostLocalizacao(Localizacao localizacao)
         {
             try
