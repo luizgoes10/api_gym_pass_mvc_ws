@@ -62,5 +62,7 @@ namespace ApiGymPassMVC.Settings
 
         public static SqlCommand CMD_SELECT_EMPRESA_ID_LOCALIZACAO = new SqlCommand("select *from tbEmpresa where IdLocalizacao = @IdLocalizacao");
 
+        public static SqlCommand CMD_SELECT_IMG_BOX = new SqlCommand("select *from tbImagemBox");
+
     }
 }

@@ -30,5 +30,7 @@ namespace ApiGymPassMVC.Models
         public int IdEmpresa { get; set; }
 
         public List<Periodo> Periodo { get; set; }
+
+        public List<ImagemBox> ImagemBox { get; set; }
     }
 }

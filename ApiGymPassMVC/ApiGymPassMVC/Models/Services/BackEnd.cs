@@ -154,6 +154,8 @@ namespace ApiGymPassMVC.Models.Services
 
             List<Periodo> listPeriodo = null;
 
+            List<ImagemBox> listImagemBox = null;
+
             try
             {
                 ConnectionUtil.CMD_SELECT_EMP.Connection = ConnectionSettings.AbrirConexao();
@@ -169,6 +171,8 @@ namespace ApiGymPassMVC.Models.Services
                 listLocalizacao = new List<Localizacao>();
 
                 listPeriodo = new List<Periodo>();
+
+                listImagemBox = new List<ImagemBox>();
 
                 reader = ConnectionUtil.CMD_SELECT_EMP.ExecuteReader();
 
@@ -265,6 +269,19 @@ namespace ApiGymPassMVC.Models.Services
                         IdBox = Convert.ToInt32(reader["IdBox"])
                     });
                 }
+                ConnectionSettings.FecharConexao();
+                reader = null;
+                ConnectionUtil.CMD_SELECT_IMG_BOX.Connection = ConnectionSettings.AbrirConexao();
+                reader = ConnectionUtil.CMD_SELECT_IMG_BOX.ExecuteReader();
+                while (reader.Read())
+                {
+                    listImagemBox.Add(new ImagemBox
+                    {
+                        IdImagem = Convert.ToInt32(reader["IdImagem"]),
+                        NmDescricao = reader["NmDescricao"].ToString(),
+                        IdBox = Convert.ToInt32(reader["IdBox"])
+                    });
+                }
                 foreach (var r in listRegiao)
                 {
                     r.Estado = listEstado.Where(le => le.IdRegiao == r.IdRegiao).ToList();
@@ -284,6 +301,10 @@ namespace ApiGymPassMVC.Models.Services
                 foreach (var b in listBox)
                 {
                     b.Periodo = listPeriodo.Where(lp => lp.IdBox == b.IdBox).ToList();
+                }
+                foreach(var b in listBox)
+                {
+                    b.ImagemBox = listImagemBox.Where(li => li.IdBox == b.IdBox).ToList();
                 }
                 return listRegiao;
             }
